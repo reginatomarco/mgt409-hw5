@@ -1,0 +1,128 @@
+{
+  "shop_date": "2026-08-31",
+  "source": "data/campus_customs_new.db + output/audit_trail.json (runs after the 2026-10-26T18:03:11Z reset)",
+  "model": "gpt-6-luna",
+  "cash": {
+    "start": 3400.0,
+    "end": 152.0,
+    "matches_cash_accounts": true
+  },
+  "tickets": [
+    {
+      "id": 101,
+      "subject": "Bulldog tee",
+      "requester": "Tauhid Zaman",
+      "final_status": "closed",
+      "outcome": "Tee was out of stock. Overdue invoice 501 ($840) paid to unblock the vendor, 1 tee ordered ($8), arriving about 2026-09-05. Tauhid told 'out of stock', then 'on the way'.",
+      "cash_change": -848.0,
+      "runs": [
+        "20261026T180315Z-2b7218",
+        "20261026T180519Z-c2b5ea"
+      ],
+      "agents": {
+        "boss": "Read the ticket's next step; sent Inventory and Customer Service; summed up the decisions for the owner.",
+        "inventory": "Found 0 in stock; proposed a 1-tee restock ($8); asked Accounting directly to request the blocking invoice.",
+        "accounting": "Requested payment of overdue invoice 501 ($840) after checking cash.",
+        "facilities": null,
+        "customer_service": "Sent two short messages (out of stock; on the way ~9/5) and closed the ticket."
+      },
+      "human_approvals": [
+        {
+          "at_utc": "2026-10-26T18:05:15.365+00:00",
+          "by": "Marco Reginato",
+          "action": "payment_approved",
+          "request_id": 2,
+          "kind": "invoice",
+          "for": "Rush reprint CC-TEE-WHITE S",
+          "payee": "Bulldog Print Co",
+          "amount": 840.0,
+          "checking_after": 160.0
+        },
+        {
+          "at_utc": "2026-10-26T18:05:18.113+00:00",
+          "by": "Marco Reginato",
+          "action": "payment_approved",
+          "request_id": 1,
+          "kind": "purchase",
+          "for": "Purchase order: 1 x Classic Bulldog Tee S (#101)",
+          "payee": "Bulldog Print Co",
+          "amount": 8.0,
+          "checking_after": 152.0
+        }
+      ],
+      "messages_sent": 2
+    },
+    {
+      "id": 102,
+      "subject": "Rent due",
+      "requester": "Elm City Properties",
+      "final_status": "closed",
+      "outcome": "Rent of $2,400 for the Chapel Street shop paid before its 2026-09-02 due date; next due 2026-10-02. Landlord got two notes.",
+      "cash_change": -2400.0,
+      "runs": [
+        "20261026T180336Z-880bbd",
+        "20261026T180456Z-1ff6a5"
+      ],
+      "agents": {
+        "boss": "Sent Facilities; reported the rent decision.",
+        "inventory": null,
+        "accounting": "Confirmed directly to Facilities that cash covered rent alongside invoice 501.",
+        "facilities": "Checked the lease, asked Accounting about cash, requested rent, messaged the landlord, closed after payment.",
+        "customer_service": null
+      },
+      "human_approvals": [
+        {
+          "at_utc": "2026-10-26T18:04:55.146+00:00",
+          "by": "Marco Reginato",
+          "action": "payment_approved",
+          "request_id": 3,
+          "kind": "rent",
+          "for": "Rent: Chapel Street shop",
+          "payee": "Elm City Properties",
+          "amount": 2400.0,
+          "checking_after": 1000.0
+        }
+      ],
+      "messages_sent": 2
+    },
+    {
+      "id": 103,
+      "subject": "Bulk hoodie discount",
+      "requester": "Yale AI Club",
+      "final_status": "closed",
+      "outcome": "Only 8 of 20 hoodies in stock. Owner rejected the $264 restock and said no to the 10% discount. Club got one message: 8 hoodies at $58 each ($464).",
+      "cash_change": 0.0,
+      "runs": [
+        "20261026T180414Z-486198",
+        "20261026T180549Z-70a07b"
+      ],
+      "agents": {
+        "boss": "Sent Inventory and Customer Service; gave the owner two yes/no decisions.",
+        "inventory": "Found 8 in stock; proposed a 12-hoodie restock ($264); checked with Accounting directly.",
+        "accounting": "Reported that cash could not cover every bill if the restock were also paid.",
+        "facilities": null,
+        "customer_service": "Priced a 10% discount ($52.20) without telling the customer, then sent the one final message and closed."
+      },
+      "human_approvals": [
+        {
+          "at_utc": "2026-10-26T18:05:44.643+00:00",
+          "by": "Marco Reginato",
+          "action": "owner_decision",
+          "ask": "Approve 10% discount: $52.20 each for 20 hoodies?",
+          "answer": "no"
+        },
+        {
+          "at_utc": "2026-10-26T18:05:47.316+00:00",
+          "by": "Marco Reginato",
+          "action": "payment_rejected",
+          "request_id": 4,
+          "kind": "purchase",
+          "for": "Restock 12 x CC-HOOD-NAVY M",
+          "amount": 264.0,
+          "checking_after": 152.0
+        }
+      ],
+      "messages_sent": 1
+    }
+  ]
+}

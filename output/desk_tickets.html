@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Customs — Desk Tickets</title>
+<style>
+  :root {
+    --navy: #00356b;
+    --navy-soft: #e8eef6;
+    --ink: #1f2933;
+    --muted: #5f6b7a;
+    --line: #d9dee5;
+    --bg: #f6f7f9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.5;
+  }
+  header {
+    background: var(--navy);
+    color: #fff;
+    padding: 20px 32px;
+  }
+  header h1 { margin: 0; font-size: 22px; font-weight: 600; }
+  header p { margin: 4px 0 0; font-size: 14px; opacity: .85; }
+  main { max-width: 900px; margin: 0 auto; padding: 24px 32px 48px; }
+
+  [role="tablist"] {
+    display: flex;
+    gap: 4px;
+    border-bottom: 2px solid var(--line);
+    flex-wrap: wrap;
+  }
+  [role="tab"] {
+    appearance: none;
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: none;
+    padding: 10px 18px;
+    font: inherit;
+    font-size: 15px;
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 6px 6px 0 0;
+    margin-bottom: -2px;
+  }
+  [role="tab"]:hover { color: var(--navy); background: var(--navy-soft); }
+  [role="tab"][aria-selected="true"] {
+    color: var(--navy);
+    font-weight: 600;
+    background: #fff;
+    border-color: var(--line);
+    border-bottom: 2px solid #fff;
+  }
+  [role="tab"]:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+
+  [role="tabpanel"] {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    padding: 24px 28px;
+  }
+  [role="tabpanel"][hidden] { display: none; }
+
+  h2 { margin: 0 0 4px; font-size: 20px; color: var(--navy); }
+  .subtitle { margin: 0 0 20px; color: var(--muted); font-size: 14px; }
+  h3 {
+    margin: 24px 0 10px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+  }
+
+  table.facts { border-collapse: collapse; width: 100%; font-size: 14px; }
+  table.facts th, table.facts td {
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.facts th { width: 34%; color: var(--muted); font-weight: 500; }
+  code {
+    font-family: Consolas, "SFMono-Regular", Menlo, monospace;
+    font-size: 13px;
+    background: var(--bg);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  .expected {
+    border-left: 4px solid var(--navy);
+    background: var(--navy-soft);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 0;
+    white-space: pre-line;
+  }
+  .byline { margin: 8px 0 0; font-size: 12px; color: var(--muted); }
+  h4 { margin: 18px 0 8px; font-size: 14px; color: var(--navy); }
+  .tools { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 12px 14px; list-style: none;
+           background: var(--navy-soft); border-radius: 6px; }
+  .tools code { background: #fff; border: 1px solid var(--line); }
+  .tools-note { margin: 0 0 6px; font-size: 14px; }
+
+  .actual { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 4px; }
+  .actual th, .actual td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .actual thead th { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; }
+  .actual tbody th { width: 22%; font-weight: 600; color: var(--ink); }
+  .actual td:nth-child(2) { width: 26%; }
+  .actual .chips code { display: inline-block; margin: 0 4px 4px 0; }
+  .runs { margin: 0 0 8px; font-size: 13px; color: var(--muted); }
+  .result { margin: 10px 0 0; padding: 10px 14px; background: var(--bg); border-radius: 6px; font-size: 14px; }
+  .placeholder {
+    border: 1px dashed var(--line);
+    border-radius: 6px;
+    padding: 28px;
+    text-align: center;
+    color: var(--muted);
+  }
+  footer { margin-top: 20px; font-size: 12px; color: var(--muted); }
+  .cash-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .cash-tiles div { background: var(--navy-soft); border-radius: 6px; padding: 12px 14px; }
+  .cash-tiles span { display: block; font-size: 12px; color: var(--muted); }
+  .cash-tiles b { font-size: 22px; color: var(--navy); font-variant-numeric: tabular-nums; }
+  .cash .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .cash .when { white-space: nowrap; color: var(--muted); }
+  .cash tr.total th, .cash tr.total td { font-weight: 700; border-top: 2px solid var(--line); }
+  .reflection { margin: 0; padding-left: 20px; font-size: 15px; }
+  .reflection li { margin-bottom: 14px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Campus Customs — Desk Tickets</h1>
+  <p>Shop date (<code style="background:rgba(255,255,255,.15);color:#fff">desk.date_today</code>): 2026-08-31 · Checking: $3,400 at start → $152 after the final runs</p>
+</header>
+
+<main>
+  <div role="tablist" aria-label="Desk tickets">
+    <button role="tab" id="tab-101" aria-controls="panel-101" aria-selected="true">#101 Bulldog tee</button>
+    <button role="tab" id="tab-102" aria-controls="panel-102" aria-selected="false" tabindex="-1">#102 Rent due</button>
+    <button role="tab" id="tab-103" aria-controls="panel-103" aria-selected="false" tabindex="-1">#103 Bulk hoodies</button>
+    <button role="tab" id="tab-cash" aria-controls="panel-cash" aria-selected="false" tabindex="-1">Cash</button>
+    <button role="tab" id="tab-reflection" aria-controls="panel-reflection" aria-selected="false" tabindex="-1">Reflection</button>
+  </div>
+
+  <!-- ===================== #101 ===================== -->
+  <section role="tabpanel" id="panel-101" aria-labelledby="tab-101">
+    <h2>Ticket #101 — Bulldog tee</h2>
+    <p class="subtitle">Customer order · opened 2026-08-31 09:15</p>
+
+    <h3>Ticket</h3>
+    <table class="facts">
+      <tr><th>Requester</th><td>Tauhid Zaman</td></tr>
+      <tr><th>Request</th><td>1 × Classic Bulldog Tee (<code>CC-TEE-WHITE</code>), size S</td></tr>
+      <tr><th>Notes</th><td>“Needs a tee in size S.”</td></tr>
+      <tr><th>Stock on hand (size S)</th><td>0 (Aisle B)</td></tr>
+      <tr><th>Price</th><td>List $28 · Cost $8</td></tr>
+      <tr><th>Linked invoice</th><td>#501 — Bulldog Print Co, $840, due 2026-08-28, status open</td></tr>
+      <tr><th>Vendor lead time</th><td>Bulldog Print Co: 5 days</td></tr>
+    </table>
+
+    <h3>Expected</h3>
+    <p class="expected">Boss assigns the tasks to sub-agents. Inventory checks stock of tees, and notifies accounting of money owed to Bulldog Print. Accounting trues up bulldog print, notifies Inventory, who then orders more stock and files payment owed to Accounting. Customer Service notifies Tauhid on when he can receive his order. Boss supervises and gives me a report and gets my approval for all monetary transactions</p>
+    <h4>Who the Boss calls first</h4>
+    <p class="expected">Boss calls Inventory first, since the ticket deals with a t-shirt that is out of stock</p>
+
+    <h4>MCP tools expected to run</h4>
+    <ul class="tools"><li><code>get_open_tickets</code></li><li><code>get_ticket</code></li><li><code>check_inventory</code></li><li><code>list_inventory</code></li><li><code>get_vendor_status</code></li><li><code>get_cash_position</code></li><li><code>list_payment_requests</code></li><li><code>list_payments</code></li><li><code>list_outbox</code></li><li><code>request_payment</code></li><li><code>place_order_vendor</code></li><li><code>send_message</code></li><li><code>update_ticket</code></li><li><code>approve_payment</code></li><li><code>reject_payment</code></li></ul>
+    <p class="byline">Written by Marco Reginato</p>
+    <h3>Actual</h3>
+    <p class="runs">2 runs (first run + follow-up after your approvals) · final runs on 2026-10-26 after the last reset · from <code>output/audit_trail.json</code></p>
+    <table class="actual"><thead><tr><th>Agent</th><th>Delegated to</th><th>MCP tools used</th></tr></thead><tbody><tr><th>Boss</th><td>Inventory, Customer Service</td><td class="chips"><code>get_ticket</code><code>get_cash_position</code></td></tr><tr><th>Inventory</th><td><b>Accounting</b> (direct)</td><td class="chips"><code>check_inventory</code><code>get_vendor_status</code><code>propose_vendor_order</code></td></tr><tr><th>Accounting</th><td>—</td><td class="chips"><code>get_cash_position</code><code>list_payment_requests</code><code>request_payment</code></td></tr><tr><th>Customer Service</th><td>—</td><td class="chips"><code>get_ticket</code><code>list_outbox</code><code>send_message</code><code>update_ticket</code></td></tr><tr><th>You</th><td>—</td><td class="chips"><code>approve_payment</code> (invoice 501 $840, tee purchase $8)</td></tr></tbody></table>
+    <p class="result"><b>Result:</b> Inventory found 0 in stock, proposed a 1-tee restock ($8), and asked Accounting directly to request overdue invoice 501. You approved both, so the order was placed (arrives about 2026-09-05). Tauhid got two messages: out of stock, then on the way. Ticket closed.</p>
+  </section>
+
+  <!-- ===================== #102 ===================== -->
+  <section role="tabpanel" id="panel-102" aria-labelledby="tab-102" hidden>
+    <h2>Ticket #102 — Rent due</h2>
+    <p class="subtitle">Rent notice · opened 2026-08-31 11:05</p>
+
+    <h3>Ticket</h3>
+    <table class="facts">
+      <tr><th>Requester</th><td>Elm City Properties</td></tr>
+      <tr><th>Notes</th><td>“Email: shop rent due in 2 days.”</td></tr>
+      <tr><th>Lease</th><td>#1 — Chapel Street shop</td></tr>
+      <tr><th>Monthly rent</th><td>$2,400</td></tr>
+      <tr><th>Next due</th><td>2026-09-02 (2 days after the shop date)</td></tr>
+    </table>
+
+    <h3>Expected</h3>
+    <p class="expected">Boss assigns task to Facilities, who then determines what is required and communicates w Accounting. Reports to Boss, who then asks me to pay rent or suggests alternatives.</p>
+    <h4>Who the Boss calls first</h4>
+    <p class="expected">Boss calls Facilities first, since it deals with rent</p>
+
+    <h4>MCP tools expected to run</h4>
+    <ul class="tools"><li><code>get_open_tickets</code></li><li><code>get_ticket</code></li><li><code>get_cash_position</code></li><li><code>list_payment_requests</code></li><li><code>list_payments</code></li><li><code>update_ticket</code></li><li><code>approve_payment</code></li><li><code>reject_payment</code></li><li><code>get_lease</code></li></ul>
+    <p class="byline">Written by Marco Reginato</p>
+    <h3>Actual</h3>
+    <p class="runs">2 runs (first run + follow-up after your approval) · final runs on 2026-10-26 after the last reset · from <code>output/audit_trail.json</code></p>
+    <table class="actual"><thead><tr><th>Agent</th><th>Delegated to</th><th>MCP tools used</th></tr></thead><tbody><tr><th>Boss</th><td>Facilities</td><td class="chips"><code>get_ticket</code><code>get_cash_position</code></td></tr><tr><th>Facilities</th><td><b>Accounting</b> (direct)</td><td class="chips"><code>get_ticket</code><code>get_lease</code><code>list_payment_requests</code><code>get_cash_position</code><code>request_payment</code><code>send_message</code><code>update_ticket</code></td></tr><tr><th>Accounting</th><td>—</td><td class="chips"><code>get_cash_position</code><code>list_payment_requests</code></td></tr><tr><th>You</th><td>—</td><td class="chips"><code>approve_payment</code> (rent $2,400)</td></tr></tbody></table>
+    <p class="result"><b>Result:</b> Facilities checked with Accounting that cash covered rent alongside invoice 501, then requested the $2,400 rent. You approved it. The landlord got two notes (received, then paid). Rent is paid through 2026-10-01. Ticket closed.</p>
+  </section>
+
+  <!-- ===================== #103 ===================== -->
+  <section role="tabpanel" id="panel-103" aria-labelledby="tab-103" hidden>
+    <h2>Ticket #103 — Bulk hoodie discount</h2>
+    <p class="subtitle">Price override · opened 2026-08-31 16:55</p>
+
+    <h3>Ticket</h3>
+    <table class="facts">
+      <tr><th>Requester</th><td>Yale AI Club</td></tr>
+      <tr><th>Request</th><td>20 × Basic Hoodie Big Yale (<code>CC-HOOD-NAVY</code>), size M, at a bulk discount</td></tr>
+      <tr><th>Notes</th><td>“Student org wants 20 hoodies, size M, asking for a bulk discount.”</td></tr>
+      <tr><th>Stock on hand (size M)</th><td>8 (Aisle A)</td></tr>
+      <tr><th>Price</th><td>List $58 · Cost $22</td></tr>
+    </table>
+
+    <h3>Expected</h3>
+    <p class="expected">Boss assigns task to Customer Service, Inventory, and Accounting who then orders the missing hoodies, sends payment (with my approval), and notifies customer. Boss coordinates this ticket with #101 to ensure proper funds, timing, and execution for my approval, as well as getting my approval for the bulk discount.</p>
+    <h4>Who the Boss calls first</h4>
+    <p class="expected">Boss calls Inventory first, since it deals with hoodies</p>
+
+    <h4>MCP tools expected to run</h4>
+    <p class="tools-note">same as 101</p><ul class="tools"><li><code>get_open_tickets</code></li><li><code>get_ticket</code></li><li><code>check_inventory</code></li><li><code>list_inventory</code></li><li><code>get_vendor_status</code></li><li><code>get_cash_position</code></li><li><code>list_payment_requests</code></li><li><code>list_payments</code></li><li><code>list_outbox</code></li><li><code>request_payment</code></li><li><code>place_order_vendor</code></li><li><code>send_message</code></li><li><code>update_ticket</code></li><li><code>approve_payment</code></li><li><code>reject_payment</code></li></ul>
+    <p class="byline">Written by Marco Reginato</p>
+    <h3>Actual</h3>
+    <p class="runs">2 runs (first run + follow-up after your decisions) · final runs on 2026-10-26 after the last reset · from <code>output/audit_trail.json</code></p>
+    <table class="actual"><thead><tr><th>Agent</th><th>Delegated to</th><th>MCP tools used</th></tr></thead><tbody><tr><th>Boss</th><td>Inventory, Customer Service</td><td class="chips"><code>get_ticket</code><code>get_cash_position</code></td></tr><tr><th>Inventory</th><td><b>Accounting</b> (direct)</td><td class="chips"><code>get_ticket</code><code>check_inventory</code><code>list_inventory</code><code>get_vendor_status</code><code>propose_vendor_order</code></td></tr><tr><th>Accounting</th><td>—</td><td class="chips"><code>get_cash_position</code><code>list_payment_requests</code></td></tr><tr><th>Customer Service</th><td>—</td><td class="chips"><code>get_ticket</code><code>quote_price</code><code>update_ticket</code><code>send_message</code></td></tr><tr><th>You</th><td>—</td><td class="chips"><code>reject_payment</code><code>update_ticket</code> (rejected the $264 restock; said no to the 10% discount)</td></tr></tbody></table>
+    <p class="result"><b>Result:</b> Only 8 of 20 hoodies were in stock. Inventory proposed a 12-hoodie restock ($264), and Customer Service priced a 10% discount but sent nothing yet. You rejected the restock (cash) and said no to the discount. The Yale AI Club got one message: 8 hoodies at $58 each ($464). Ticket closed.</p>
+  </section>
+
+  <!-- ===================== Cash ===================== -->
+  <section role="tabpanel" id="panel-cash" aria-labelledby="tab-cash" hidden>
+    <h2>Cash</h2>
+    <p class="subtitle">Checking account, shop date 2026-08-31 · final runs on 2026-10-26 after the last reset · from the <code>payments</code> table and <code>output/audit_trail.json</code></p>
+
+    <div class="cash-tiles">
+      <div><span>Starting checking</span><b>$3,400.00</b></div>
+      <div><span>Paid out</span><b>−$3,248.00</b></div>
+      <div><span>Ending checking</span><b>$152.00</b></div>
+    </div>
+
+    <h3>Itemized</h3>
+    <table class="actual cash">
+      <thead><tr><th>Ticket</th><th>When</th><th>Why</th><th class="num">Change</th><th class="num">Checking</th></tr></thead>
+      <tbody><tr><th>Start</th><td class="when">18:03 UTC reset</td><td>Working DB cloned from <code>data/campus_customs.db</code></td><td class="num"></td><td class="num">$3,400.00</td></tr><tr><th>#102 Rent due</th><td class="when">18:04:55 UTC</td><td>Approved rent to Elm City Properties, Chapel Street shop (request 3 → payment 1)</td><td class="num">−$2,400.00</td><td class="num">$1,000.00</td></tr><tr><th>#101 Bulldog tee</th><td class="when">18:05:15 UTC</td><td>Approved overdue Bulldog Print Co invoice 501 (request 2 → payment 2)</td><td class="num">−$840.00</td><td class="num">$160.00</td></tr><tr><th></th><td class="when">18:05:18 UTC</td><td>Approved tee restock purchase, 1 × CC-TEE-WHITE S (request 1 → payment 3, prepaid invoice 502)</td><td class="num">−$8.00</td><td class="num">$152.00</td></tr><tr><th>#103 Bulk hoodies</th><td class="when">18:05:47 UTC</td><td>Rejected 12-hoodie restock (request 4, $264) and said no to the 10% discount. Nothing paid.</td><td class="num">$0.00</td><td class="num">$152.00</td></tr></tbody>
+    </table>
+
+    <h3>By ticket</h3>
+    <table class="actual cash">
+      <tbody>
+        <tr><th>#101 Bulldog tee</th><td>Invoice 501 $840 + tee $8</td><td class="num">−$848.00</td></tr>
+        <tr><th>#102 Rent due</th><td>Rent $2,400</td><td class="num">−$2,400.00</td></tr>
+        <tr><th>#103 Bulk hoodies</th><td>Restock rejected, no discount</td><td class="num">$0.00</td></tr>
+        <tr class="total"><th>Total</th><td>3 payments</td><td class="num">−$3,248.00</td></tr>
+      </tbody>
+    </table>
+
+    <p class="result"><b>Check:</b> $3,400.00 − $2,400.00 − $840.00 − $8.00 = <b>$152.00</b>, which matches
+    <code>cash_accounts</code> (checking) in <code>data/campus_customs_new.db</code>. The original
+    <code>data/campus_customs.db</code> is untouched and still shows $3,400.00. No revenue is modeled: the club's $464 is a quote, not a sale.</p>
+  </section>
+
+  <!-- ===================== Reflection ===================== -->
+  <section role="tabpanel" id="panel-reflection" aria-labelledby="tab-reflection" hidden>
+    <h2>Reflection</h2>
+    <p class="subtitle">In my own words.</p>
+    <ul class="reflection">
+      <li>I would evaluate the performance of each agent based on the accuracy of the information that is ultimately relayed to me. For 101, Inventory should correctly know the SKU# that Tauhid wanted and with accurate stock information, Customer Service would draft and send appropriate emails to the customer, Accounting would give accurate status on the vendor's owed money and order and update the cash position, and the boss would relay this information to me with a recommendation comparing its priority to the remainder of the tickets. For 102, I would expect the boss to contact facilities and let it handle rent payment with Accounting to accurately pay the rent. For 103, I would expect the boss to assign the task to inventory, and coordinate the two of them with accounting to have a clear understanding of the cash position with respect to the remaining ticket items (ie rent) and recommend an appropriate course of action for me to approve/deny, with customer service correctly communicating our final answer to the club.</li>
+      <li>For 101, I accurately identified that the boss would call Inventory, Accounting, and Customer Service. For 102, I correctly identified that Boss would call Facilities and would coordinate with accounting. For 103, I did not consider that Customer Service would be contacting the AI Club.</li>
+      <li>Paying rent would have been simpler with just one agent and tools because it is a singular, simple process that does not require much coordination besides understanding the cash balance and rent due. IE no Boss would be needed to coordinate multiple departments</li>
+      <li>This agent team could handle the following three problems: A merchandise return / exchange, a facilities issue (ie calling an electrician), and general customer inquiries</li>
+      <li>Three new problems that this agent team could not solve with the given tools are: creating a balance sheet and P&amp;L statement, since more detailed accounting skills would be needed. Selling an item, since we are only focused on cash flowing out, and customer service phone calls, since this is just an email client</li>
+    </ul>
+  </section>
+
+  <footer>Ticket facts are from <code>data/campus_customs.db</code>, the original database, before any agent run. Actual sections: final runs, checking $3,400 → $152 (rent $2,400 + invoice 501 $840 + tee $8).</footer>
+</main>
+
+<script>
+  (function () {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+
+    function select(tab, focus) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      if (focus) tab.focus();
+      history.replaceState(null, '', '#' + tab.id.replace('tab-', ''));
+    }
+
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { select(tab, false); });
+      tab.addEventListener('keydown', function (e) {
+        var next = null;
+        if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+        if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+        if (e.key === 'Home') next = tabs[0];
+        if (e.key === 'End') next = tabs[tabs.length - 1];
+        if (next) { e.preventDefault(); select(next, true); }
+      });
+    });
+
+    var fromHash = document.getElementById('tab-' + location.hash.slice(1));
+    if (fromHash) select(fromHash, false);
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# Secrets: never commit a real .env (only the empty template)
+.env
+.env.*
+*.env
+!.env.example
+
+__pycache__/
+*.pyc
+
+# The databases ARE committed on purpose (data/*.db) so graders can run the app.
